@@ -9,10 +9,9 @@ public class StoreApp {
 
         System.out.println("We carry the following inventory: ");
 
-        for (int i = 0; i < inventory.size(); i++) {
-            Product p = inventory.get(i);
+        for (Product product : inventory) {
             System.out.printf("id: %d %s - Price: $%.2f\n",
-                    p.getId(), p.getName(), p.getPrice());
+                    product.getId(), product.getName(), product.getPrice());
         }
     }
 
