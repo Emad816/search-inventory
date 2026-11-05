@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StoreApp {
@@ -18,17 +22,31 @@ public class StoreApp {
     // this method loads product objects into inventory
     public static ArrayList<Product> getInventory() {
 
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("src/main/resources/inventory.csv");
+
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
         ArrayList<Product> inventory = new ArrayList<>();
 
-        inventory.add(new Product(1, "Apple", 1.50));
-        inventory.add(new Product(2, "Banana", 1.40));
-        inventory.add(new Product(3, "Cheese", 11.99));
-        inventory.add(new Product(4, "Coffee", 4.99));
-        inventory.add(new Product(5, "Pizza", 2.99));
-        inventory.add(new Product(6, "Rice", 9.99));
-        inventory.add(new Product(7, "Pepper", 8.99));
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
 
+            //Split the line using (|)
+            String[] values = line.split("\\|");
 
+            //Assigning line parts to variables
+            int id = Integer.parseInt(values[0]);
+            String name = values[1];
+            double price = Double.parseDouble(values[2]);
+            inventory.add(new Product(id, name, price));
+        }
         return inventory;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
